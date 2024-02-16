@@ -1,0 +1,2 @@
+# VisuaLogs
+Logstalgia made portable
