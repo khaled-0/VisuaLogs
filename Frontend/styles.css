@@ -1,0 +1,27 @@
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.metrics {
+  position: fixed;
+  z-index: 999;
+  padding: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .metrics {
+    color: white;
+  }
+}

@@ -1,15 +1,16 @@
-export class Circle {
-  /**@param {CanvasRenderingContext2D} canvas  */
+export class Bouncer {
+  /**
+   * @param {CanvasRenderingContext2D} canvas
+   */
   constructor(canvas) {
     this.canvas = canvas;
-    this.x = 0;
-    this.y = Math.random() * canvas.width;
+
+    this.x = canvas.width;
+    this.y = Math.random() * canvas.height;
     this.radius = Math.random() * 10;
     this.fillStyle = this.#getRandomColor();
 
-    this.speed = 5;
-
-    this.animationX = this.#getRandomVelocity();
+    this.animationX = this.#getRandomVelocity(true);
     this.animationY = this.#getRandomVelocity();
 
     this.draw();
@@ -28,21 +29,18 @@ export class Circle {
       this.animationY = Math.abs(this.animationY);
     }
 
-    if (this.x < this.radius) {
-      this.animationX = Math.abs(this.animationX);
+    if (this.x + this.radius < 0) {
+      this.onDestroy(this.id);
     }
 
     this.x += this.animationX;
     this.y += this.animationY;
-
-    this.draw();
   }
 
   draw() {
     this.canvas.beginPath();
-    this.canvas.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     this.canvas.fillStyle = this.fillStyle;
-    this.canvas.fill();
+    this.canvas.fillRect(this.x, this.y, 10, 70);
   }
 
   #getRandomColor() {
@@ -51,8 +49,8 @@ export class Circle {
     });
   }
 
-  #getRandomVelocity() {
-    const array = [-4, -3, -2, 2, 3, 4];
+  #getRandomVelocity(positive = false) {
+    const array = positive ? [2, 3, 4] : [, -4, -3, -2, 2, 3, 4];
     return array[Math.floor(Math.random() * array.length)];
   }
 }

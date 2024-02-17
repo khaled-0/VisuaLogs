@@ -4,21 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
     <title>VisuaLogs</title>
-
-    <style>
-      html,
-      body {
-        margin: 0 !important;
-        padding: 0 !important;
-        background-color: black;
-      }
-    </style>
   </head>
 
   <body>
+    <div class="metrics">
+      <p id="fps"></p>
+      <p id="balls"></p>
+    </div>
     <canvas id="logViewCanvas" style="position: fixed"></canvas>
   </body>
 
-  <script type="module" src="js/index.js"></script>
+  <script type="module" src="./main.js"></script>
 </html>
