@@ -4,9 +4,8 @@ import { Tail } from "tail";
 
 const logFile = new Tail("/tmp/logstalgia");
 
-express().use(express.static("Frontend")).listen(8080);
-
-const ws = new WebSocketServer({ port: 8081 });
+const server = express().use(express.static("Frontend")).listen(8080);
+const ws = new WebSocketServer({ server });
 
 ws.on("connection", function connection(ws) {
   logFile.on("line", (line) => {
