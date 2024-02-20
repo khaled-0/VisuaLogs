@@ -1,27 +1,33 @@
-import * as Utils from "./utils.js";
+import * as Utils from "../utils.js";
 export class Circle {
   /**
    * @param {CanvasRenderingContext2D} canvas
    * @param {onDestroy} //TODO type
+   * @param {onBounce} //TODO type
    */
-  constructor(canvas, onDestroy) {
+  constructor(canvas, onDestroy, onBounce) {
     this.canvas = canvas;
     this.onDestroy = onDestroy;
+    this.onBounce = onBounce;
     this.id = crypto.randomUUID();
-    this.x = 0;
-    this.y = Math.random() * canvas.width;
-    this.radius = Math.random() * 10 || 6;
+    this.bounced = false;
+    this.radius = Utils.getRandomInt() + 3;
+    this.x = 0 - this.radius;
+    this.y = Math.random() * canvas.height - this.radius;
     this.fillStyle = Utils.getRandomColor();
 
-    this.animationX = Utils.getRandomVelocity(true);
-    this.animationY = Utils.getRandomVelocity();
+    this.animationX = 2; //Utils.getRandomInt();
+    this.animationY =
+      this.y > canvas.height / 2 ? -Utils.getRandomInt() : Utils.getRandomInt();
 
     this.draw();
   }
 
-  update() {
-    if (this.x + this.radius > this.canvas.width) {
+  update(bouncerWidth = 0) {
+    if (this.x + this.radius + bouncerWidth > this.canvas.width) {
       this.animationX = -this.animationX;
+      this.bounced = true;
+      this.onBounce(this);
     }
 
     if (this.y + this.radius > this.canvas.height) {
