@@ -39,27 +39,15 @@ export class Bouncer {
     this.draw();
   }
 
-  /** @param {Circle} closestBall */
-  jumpTo(yPos, closestBall) {
-    console.log("jump");
+  /**
+   * @param {yPos} number
+   * //TODO This seems hacky
+   */
+  jumpTo(yPos) {
+    let interpolatedYPos = yPos / (this.height / 8);
+    if (yPos < this.y) interpolatedYPos = -interpolatedYPos;
 
-    let distNew = closestBall.y - this.y;
-    let time = this.canvas.width - closestBall.x;
-
-    // yPos = distNew / time;
-
-    //// y
-    ///
-
-    let xDist = this.canvas.width - closestBall.x;
-
-    // distNew =  closestBall.y - this.y  (abs)
-    // time = canvas.width - closestBall.x
-
-    // newY = distNew / time (abs)
-    ///
-
-    this.y = yPos;
+    this.y += interpolatedYPos;
   }
 
   idle() {

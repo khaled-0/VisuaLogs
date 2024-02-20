@@ -12,7 +12,7 @@ let bouncer;
  @param {HTMLCanvasElement} element
  */
 function init(element, height, width) {
-  //TODO https://stackoverflow.com/a/73831830/16867144
+  //TODO https://stackoverflow.com/a/73831830/16867144 Canvas resize
   element.height = height;
   element.width = width;
   canvas = element.getContext("2d");

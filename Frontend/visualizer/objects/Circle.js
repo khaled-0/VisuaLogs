@@ -2,8 +2,8 @@ import * as Utils from "../utils.js";
 export class Circle {
   /**
    * @param {CanvasRenderingContext2D} canvas
-   * @param {onDestroy} //TODO type
-   * @param {onBounce} //TODO type
+   * @param {function(string): void} onDestroy
+   * @param {function(Circle): void} onBounce
    */
   constructor(canvas, onDestroy, onBounce) {
     this.canvas = canvas;
@@ -16,9 +16,8 @@ export class Circle {
     this.y = Math.random() * canvas.height - this.radius;
     this.fillStyle = Utils.getRandomColor();
 
-    this.animationX = 2; //Utils.getRandomInt();
-    this.animationY =
-      this.y > canvas.height / 2 ? -Utils.getRandomInt() : Utils.getRandomInt();
+    this.animationX = Utils.getRandomVelocity(true);
+    this.animationY = Utils.getRandomVelocity(this.y < canvas.height / 2);
 
     this.draw();
   }
