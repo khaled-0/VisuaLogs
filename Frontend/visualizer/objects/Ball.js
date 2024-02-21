@@ -1,9 +1,9 @@
 import * as Utils from "../utils.js";
-export class Circle {
+export class Ball {
   /**
    * @param {CanvasRenderingContext2D} canvas
    * @param {function(string): void} onDestroy
-   * @param {function(Circle): void} onBounce
+   * @param {function(Ball): void} onBounce
    */
   constructor(canvas, onDestroy, onBounce) {
     this.canvas = canvas;
@@ -51,6 +51,7 @@ export class Circle {
     this.canvas.beginPath();
     this.canvas.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     this.canvas.fillStyle = this.fillStyle;
-    this.canvas.fill();
+    this.canvas.strokeStyle = this.fillStyle;
+    this.bounced ? this.canvas.fill() : this.canvas.stroke();
   }
 }

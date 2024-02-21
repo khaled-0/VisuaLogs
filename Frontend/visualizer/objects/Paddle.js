@@ -1,6 +1,6 @@
 import * as Utils from "../utils.js";
 
-export class Bouncer {
+export class Paddle {
   /**
    * @param {CanvasRenderingContext2D} canvas
    */
@@ -11,10 +11,10 @@ export class Bouncer {
     this.width = canvas.width / 100;
 
     this.x = canvas.width - this.width;
-    this.y = Math.random() * canvas.height;
+    this.y = Math.random() * canvas.height - this.height / 2;
 
     this.fillStyle = Utils.getRandomColor();
-    this.animationY = Utils.getRandomVelocity();
+    this.animationY = Utils.getRandomVelocity(this.y < canvas.height / 2);
 
     this.draw();
   }
@@ -41,13 +41,15 @@ export class Bouncer {
 
   /**
    * @param {yPos} number
-   * //TODO This seems hacky
+   * //TODO Fix teleportation
    */
-  jumpTo(yPos) {
-    let interpolatedYPos = yPos / (this.height / 8);
-    if (yPos < this.y) interpolatedYPos = -interpolatedYPos;
+  jumpTo(yPos, closestBall) {
+    // let interpolatedYPos = yPos / (this.canvas.width - closestBall.x);
+    // if (yPos < this.y) interpolatedYPos = -interpolatedYPos;
 
-    this.y += interpolatedYPos;
+    //  this.y += interpolatedYPos;
+
+    this.y = yPos;
   }
 
   idle() {

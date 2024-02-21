@@ -1,12 +1,12 @@
-import { Bouncer } from "./objects/Bouncer.js";
-import { Circle } from "./objects/Circle.js";
+import { Paddle } from "./objects/Paddle.js";
+import { Ball } from "./objects/Ball.js";
 
 /** @type {CanvasRenderingContext2D} */
 let canvas;
-/** @type {Array<Circle>} */
-let circles = [];
-/** @type {Bouncer} */
-let bouncer;
+/** @type {Array<Ball>} */
+let balls = [];
+/** @type {Paddle} */
+let paddle;
 
 /**
  @param {HTMLCanvasElement} element
@@ -19,7 +19,7 @@ function init(element, height, width) {
   canvas.height = element.height;
   canvas.width = element.width;
 
-  bouncer = new Bouncer(canvas);
+  paddle = new Paddle(canvas);
 
   animate();
 }
@@ -29,23 +29,25 @@ function init(element, height, width) {
  */
 export function visualize(log) {
   if (canvas == undefined) throw Error("Canvas not initialized");
-  circles.push(new Circle(canvas, destroyHandler, bounceHandler));
+  balls.push(new Ball(canvas, ballDestroyHandler, ballBounceHandler));
 }
 
 function animate(frameTime) {
   canvas.clearRect(0, 0, canvas.width, canvas.height);
-  circles.forEach((circle) => circle.update(bouncer.width));
+  balls.forEach((circle) => circle.update(paddle.width));
 
-  /** @type {Circle | undefined} */
+  /** @type {Ball | undefined} */
   let closestBall;
-  for (const circle of circles) {
+  for (const circle of balls) {
     if (circle.bounced) continue;
     if (closestBall == undefined) closestBall = circle;
-    if (circle.x > closestBall.x) closestBall = circle;
+
+    if (circle.x > closestBall.x && circle.animationX > closestBall.animationX)
+      closestBall = circle;
   }
 
-  if (closestBall) bouncer.update(closestBall);
-  else bouncer.idle();
+  if (closestBall) paddle.update(closestBall);
+  else paddle.idle();
 
   requestAnimationFrame(animate);
   updateMetrics(frameTime);
@@ -56,15 +58,15 @@ function updateMetrics(frameTime) {
   const fps = (1000 / (frameTime - previousFrameTime)).toFixed(1);
   previousFrameTime = frameTime;
 
-  postMessage({ fps: fps, balls: circles.length });
+  postMessage({ fps: fps, balls: balls.length });
 }
 
-function destroyHandler(id) {
-  circles = circles.filter((item) => item.id != id);
+function ballDestroyHandler(id) {
+  balls = balls.filter((item) => item.id != id);
 }
 
-function bounceHandler(ball) {
-  bouncer.fillStyle = ball.fillStyle;
+function ballBounceHandler(ball) {
+  paddle.fillStyle = ball.fillStyle;
 }
 
 addEventListener("message", (event) => {
